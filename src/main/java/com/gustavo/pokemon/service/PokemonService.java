@@ -1,10 +1,11 @@
 package com.gustavo.pokemon.service;
 
+import com.gustavo.pokemon.banco.Pokemon;
 import com.gustavo.pokemon.ws.PokemonWS;
 import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 
 public class PokemonService {
 
@@ -24,24 +25,23 @@ public class PokemonService {
         * */
         JSONObject json = new JSONObject();
 
-        // buscando apenas nos pokemons da primeira geracao
-        ArrayList<String> todos = ws.buscaTodos(151);
-        ArrayList<String> filtrados = new ArrayList<>();
+        List<String> todos = ws.buscaTodos();
+        List<String> filtrados = new ArrayList<>();
 
         if( entrada != null )
             filtrados.addAll(filtrar(todos, entrada));
         else
             filtrados.addAll(todos);
 
-        ArrayList<JSONObject> retorno = preparaRetorno(filtrados, entrada);
+        List<JSONObject> retorno = preparaRetorno(filtrados, entrada);
 
         json.put("result",retorno);
 
         return json;
     }
 
-    private ArrayList<String> filtrar(ArrayList<String> todos, String busca) {
-        ArrayList<String> aux = new ArrayList<>();
+    private List<String> filtrar(List<String> todos, String busca) {
+        List<String> aux = new ArrayList<>();
         for( String pokemon : todos ) {
             if ( pokemon.contains(busca) )
                 aux.add(pokemon);
@@ -49,8 +49,8 @@ public class PokemonService {
         return aux;
     }
 
-    private ArrayList<JSONObject> preparaRetorno(ArrayList<String> filtrados, String busca) {
-        ArrayList<JSONObject> retorno = new ArrayList<>();
+    private List<JSONObject> preparaRetorno(List<String> filtrados, String busca) {
+        List<JSONObject> retorno = new ArrayList<>();
         for( String pokemon : filtrados ) {
             JSONObject item = new JSONObject();
             item.put("name", pokemon);
@@ -83,5 +83,27 @@ public class PokemonService {
                         busca +
                         "</pre>" +
                         pokemon.substring(index+tamBusca);
+    }
+
+    public List<Pokemon> novaBuscaPokemons(String nome){
+        List<Pokemon> retorno;
+        List<Pokemon> busca;
+        busca = ws.novaBuscaTodos();
+
+        retorno = filtrarPokemon(busca, nome);
+        return retorno;
+    }
+
+    private List<Pokemon> filtrarPokemon(List<Pokemon> lista, String nome) {
+        List<Pokemon> retorno = new ArrayList<>();
+        if ( nome != null ){
+            for( Pokemon pokemon : lista ) {
+                if (pokemon.getName().equals(nome))
+                    retorno.add(pokemon);
+            }
+        } else {
+            retorno.addAll(lista);
+        }
+        return retorno;
     }
 }
