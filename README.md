@@ -1,6 +1,6 @@
-#Consumo da API do pokemon
+# Consumo da API do pokemon
 
-##TODO list
+## TODO list
 
 - refatorar a busca, p/ retornar um obj to tipo pokemon;
 - inserir mais dados no obj;
@@ -10,9 +10,9 @@
 - ampliar qtde de endpoints de buscas, permitindo buscar de outras formas;
 
 
-#Endpoints
+## Endpoints
 
-#/pokemons
+### /pokemons
 
 - Request: Get /pokemons?pokemon=substring ou /pokemons, onde a substring sera pesquisada nos nomes dos pokemons. Caso seja feito o GET sem a substring, serao retornados todos os pokemons;
 - Exemplo Response: {"result":[{"highlight":"< pre> pikachu</pre>","name":"pikachu"}]}
